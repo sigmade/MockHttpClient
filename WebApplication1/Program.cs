@@ -1,5 +1,4 @@
-
-namespace WebApplication1
+namespace WebApi
 {
     public class Program
     {
