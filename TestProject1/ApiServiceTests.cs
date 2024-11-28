@@ -1,7 +1,7 @@
 ﻿using NSubstitute;
 using System.Net;
 using System.Text.Json;
-using WebApplication;
+using WebApi;
 
 namespace UnitTests
 {
