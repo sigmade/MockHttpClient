@@ -18,14 +18,14 @@ namespace UnitTests
                 StatusCode = HttpStatusCode.OK,
                 Content = new StringContent(jsonResponse)
             };
-            var mockHttpMessageHandler = new MockHttpMessageHandler(httpResponse);
+            var mockHttpMessageHandler = new MockHttpMessageHandler((r, ct) => Task.FromResult(httpResponse));
             var httpClient = new HttpClient(mockHttpMessageHandler)
             {
-                // BaseAddress = new Uri("https://example.com/")
+                BaseAddress = new Uri("https://example.com/")
             };
 
             var mockHttpClientFactory = Substitute.For<IHttpClientFactory>();
-            mockHttpClientFactory.CreateClient("ExampleApi").Returns(httpClient);
+            mockHttpClientFactory.CreateClient("ArticleApi").Returns(httpClient);
 
             var articleService = new ArticleService(mockHttpClientFactory);
 

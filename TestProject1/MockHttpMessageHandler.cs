@@ -1,14 +1,20 @@
 ﻿
 namespace UnitTests
 {
-    internal class MockHttpMessageHandler(HttpResponseMessage responseMessage) : HttpMessageHandler
+    public class MockHttpMessageHandler : HttpMessageHandler
     {
-        private readonly HttpResponseMessage _responseMessage = responseMessage;
+        private readonly Func<HttpRequestMessage, CancellationToken, Task<HttpResponseMessage>> _responseFactory;
 
-        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
-            CancellationToken cancellationToken)
+        public MockHttpMessageHandler(Func<HttpRequestMessage, CancellationToken, Task<HttpResponseMessage>> responseFactory)
         {
-            return Task.FromResult(_responseMessage);
+            _responseFactory = responseFactory;
+        }
+
+        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            var res = await _responseFactory(request, cancellationToken);
+            return res;
         }
     }
 }
