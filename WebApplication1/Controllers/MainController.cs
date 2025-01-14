@@ -6,9 +6,9 @@ namespace WebApi.Controllers
     [Route("[controller]")]
     public class MainController : ControllerBase
     {
-        private readonly ApiService _apiService;
+        private readonly ArticleService _apiService;
 
-        public MainController(ApiService apiService)
+        public MainController(ArticleService apiService)
         {
             _apiService = apiService;
         }
@@ -17,9 +17,9 @@ namespace WebApi.Controllers
         public async Task<ActionResult> Get()
         {
 
-            var result = await _apiService.GetPostsAsync();
+            //var result = await _apiService.GetPostsAsync();
 
-            return Ok(result);
+            return Ok();
         }
     }
 }

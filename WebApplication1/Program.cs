@@ -19,7 +19,7 @@ namespace WebApi
                 client.DefaultRequestHeaders.Add("Accept", "application/json");
             });
 
-            builder.Services.AddTransient<ApiService>();
+            builder.Services.AddTransient<ArticleService>();
 
             var app = builder.Build();
 

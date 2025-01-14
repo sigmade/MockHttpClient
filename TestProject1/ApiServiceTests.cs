@@ -8,16 +8,11 @@ namespace UnitTests
     public class ApiServiceTests
     {
         [Fact]
-        public async Task GetPostsAsync_ReturnsPosts()
+        public async Task GetArticleById_ReturnsArticle()
         {
             // Arrange
-
-            var expectedPosts = new[]
-            {
-                    new Post { Id = 1, Title = "Test Post 1", Body = "Test Body 1" },
-                };
-
-            var jsonResponse = JsonSerializer.Serialize(expectedPosts);
+            var expectedArticle = new Article { Id = 1, Title = "Test Title", Body = "Test Body" };
+            var jsonResponse = JsonSerializer.Serialize(expectedArticle);
             var httpResponse = new HttpResponseMessage
             {
                 StatusCode = HttpStatusCode.OK,
@@ -26,52 +21,21 @@ namespace UnitTests
             var mockHttpMessageHandler = new MockHttpMessageHandler(httpResponse);
             var httpClient = new HttpClient(mockHttpMessageHandler)
             {
-                BaseAddress = new Uri("https://example.com/")
+                // BaseAddress = new Uri("https://example.com/")
             };
 
             var mockHttpClientFactory = Substitute.For<IHttpClientFactory>();
             mockHttpClientFactory.CreateClient("ExampleApi").Returns(httpClient);
 
-            var apiService = new ApiService(mockHttpClientFactory);
+            var articleService = new ArticleService(mockHttpClientFactory);
 
             // Act
-            var result = await apiService.GetPostsAsync();
+            var result = await articleService.GetArticleById();
 
             // Assert
             Assert.NotNull(result);
-            Assert.Equal(expectedPosts[0].Id, result[0].Id);
-            Assert.Equal(expectedPosts[0].Title, result[0].Title);
-        }
-
-        [Fact]
-        public async Task GetPostById_ReturnsPost()
-        {
-            // Arrange
-            var expectedPost = new Post { Id = 1, Title = "Test Post 1", Body = "Test Body 1" };
-            var jsonResponse = JsonSerializer.Serialize(expectedPost);
-            var httpResponse = new HttpResponseMessage
-            {
-                StatusCode = HttpStatusCode.OK,
-                Content = new StringContent(jsonResponse)
-            };
-            var mockHttpMessageHandler = new MockHttpMessageHandler(httpResponse);
-            var httpClient = new HttpClient(mockHttpMessageHandler)
-            {
-                BaseAddress = new Uri("https://example.com/")
-            };
-
-            var mockHttpClientFactory = Substitute.For<IHttpClientFactory>();
-            mockHttpClientFactory.CreateClient("ExampleApi").Returns(httpClient);
-
-            var apiService = new ApiService(mockHttpClientFactory);
-
-            // Act
-            var result = await apiService.GetPostById();
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.Equal(expectedPost.Id, result.Id);
-            Assert.Equal(expectedPost.Title, result.Title);
+            Assert.Equal(expectedArticle.Id, result.Id);
+            Assert.Equal(expectedArticle.Title, result.Title);
         }
     }
 }
