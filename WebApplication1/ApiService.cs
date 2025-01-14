@@ -16,5 +16,13 @@
 
             return res;
         }
+
+        public async Task<Post?> GetPostById()
+        {
+            var client = _httpClientFactory.CreateClient("ExampleApi");
+            var res = await client.GetFromJsonAsync<Post>("post");
+
+            return res;
+        }
     }
 }
