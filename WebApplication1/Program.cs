@@ -1,3 +1,5 @@
+using WebApi.Middleware;
+
 namespace WebApi
 {
     public class Program
@@ -34,7 +36,7 @@ namespace WebApi
 
             app.UseAuthorization();
 
-
+            app.UseMiddleware<ExceptionHandlingMiddleware>();
             app.MapControllers();
 
             app.Run();

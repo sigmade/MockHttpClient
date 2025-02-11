@@ -32,6 +32,8 @@ namespace UnitTests
             // Act
             var result = await articleService.GetArticleById();
 
+            int specificUrlCount = mockHttpMessageHandler.CountRequests(r => r.RequestUri?.ToString() == "https://example.com/article");
+
             // Assert
             Assert.NotNull(result);
             Assert.Equal(expectedArticle.Id, result.Id);
